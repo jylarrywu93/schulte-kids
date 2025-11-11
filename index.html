@@ -2,13 +2,12 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>兒童版舒爾特方格小遊戲</title>
-  <!-- 讓 iPhone 顯示正常縮放 / Make it look good on iPhone -->
+  <title>多主題兒童版舒爾特方格</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <style>
     * {
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent; /* iPhone 點擊不要藍框 / Remove tap highlight */
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -27,7 +26,7 @@
       border-radius: 24px;
       padding: 18px 18px 20px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      max-width: 460px;
+      max-width: 480px;
       width: 100%;
     }
 
@@ -61,9 +60,16 @@
 
     .controls {
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .controls-line {
+      display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
+      flex-wrap: wrap;
     }
 
     .controls label {
@@ -90,8 +96,7 @@
       background: linear-gradient(135deg, #fb7185, #f97316);
       color: #fff;
       box-shadow: 0 4px 10px rgba(248, 113, 113, 0.4);
-      transition: transform 0.1s ease, box-shadow 0.1s ease,
-        filter 0.15s ease;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
       white-space: nowrap;
     }
 
@@ -153,12 +158,22 @@
       display: block;
     }
 
+    .target-main {
+      text-align: right;
+    }
+
     .target-number {
       font-size: 32px;
       font-weight: 800;
       color: #1d4ed8;
-      min-width: 48px;
+      min-width: 60px;
       text-align: center;
+      line-height: 1.1;
+    }
+
+    .target-sub {
+      font-size: 11px;
+      color: #374151;
     }
 
     .grid-wrapper {
@@ -183,6 +198,24 @@
       transition: background 0.12s ease, transform 0.07s ease,
         box-shadow 0.12s ease, border-color 0.12s ease, color 0.12s ease;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+      text-align: center;
+    }
+
+    .cell-label {
+      display: block;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .cell-sub {
+      display: block;
+      font-size: 10px;
+      line-height: 1.1;
+      margin-top: 2px;
     }
 
     .cell:active {
@@ -216,21 +249,11 @@
     }
 
     @keyframes shake {
-      0% {
-        transform: translateX(0);
-      }
-      25% {
-        transform: translateX(-2px);
-      }
-      50% {
-        transform: translateX(2px);
-      }
-      75% {
-        transform: translateX(-1px);
-      }
-      100% {
-        transform: translateX(0);
-      }
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-1px); }
+      100% { transform: translateX(0); }
     }
 
     @media (max-width: 480px) {
@@ -239,11 +262,9 @@
         padding: 14px 12px 16px;
         border-radius: 18px;
       }
-
       h1 {
         font-size: 18px;
       }
-
       .cell {
         font-size: 18px;
       }
@@ -252,23 +273,36 @@
 </head>
 <body>
   <div class="container">
-    <h1>兒童版舒爾特方格小遊戲</h1>
+    <h1>多主題兒童版舒爾特方格</h1>
     <p class="subtitle">
-      練習專心、眼睛快快找數字的遊戲。<br />
-      <span class="en">A simple focus & number-finding game for kids / 給小朋友的專注力與找數字遊戲</span>
+      給 3～6 歲小朋友的專心與找東西遊戲。<br />
+      <span class="en">Multi-theme Schulte table game for kids / 給小朋友的多主題舒爾特方格</span>
     </p>
 
     <div class="top-row">
       <div class="controls">
-        <label>
-          方格大小（Grid Size / 方格大小）：
-          <select id="gridSize">
-            <option value="3">3 × 3（入門）</option>
-            <option value="4">4 × 4</option>
-            <option value="5" selected>5 × 5（挑戰）</option>
-          </select>
-        </label>
+        <div class="controls-line">
+          <label>
+            模式（Mode / 模式）：
+            <select id="modeSelect">
+              <option value="number">數字 Numbers</option>
+              <option value="english">英文字母 Letters</option>
+              <option value="color">顏色 Colors</option>
+              <option value="animal">動物 Animals</option>
+            </select>
+          </label>
+        </div>
+        <div class="controls-line">
+          <label>
+            方格（Grid / 方格）：
+            <select id="gridSize">
+              <option value="3">3 × 3（推薦）</option>
+              <option value="4">4 × 4</option>
+            </select>
+          </label>
+        </div>
       </div>
+
       <div class="status-right">
         <div class="status-line">
           <span class="status-label">用時 Time / 花費時間：</span>
@@ -283,10 +317,13 @@
 
     <div class="target-box">
       <div class="target-text">
-        🎯 請找這個數字（Find this number / 請找下面的數字）：<br />
-        <small>從 1 開始，依照順序 1 → 2 → 3… 點下去。</small>
+        🎯 請找這個（Find this / 請找下面的目標）：<br />
+        <small>依照順序一個一個按：數字 / 字母 / 顏色 / 動物。</small>
       </div>
-      <div class="target-number" id="nextNumber">—</div>
+      <div class="target-main">
+        <div class="target-number" id="targetMain">—</div>
+        <div class="target-sub" id="targetSub"></div>
+      </div>
     </div>
 
     <button id="startBtn" style="width: 100%; margin-bottom: 10px;">
@@ -298,76 +335,206 @@
     </div>
 
     <div class="message" id="message">
-      按「開始遊戲」後，從 <strong>1</strong> 開始找數字。<br />
-      Click numbers in order / 從 1 開始依序點。
+      選好模式與方格之後，按「開始遊戲」，從 <strong>第一個</strong>開始找。<br />
+      Choose mode, press Start, then find items in order / 依序找目標。
     </div>
   </div>
 
   <script>
     const gridSizeSelect = document.getElementById("gridSize");
+    const modeSelect = document.getElementById("modeSelect");
     const startBtn = document.getElementById("startBtn");
     const gridEl = document.getElementById("grid");
     const timerEl = document.getElementById("timer");
     const bestTimeEl = document.getElementById("bestTime");
-    const nextNumberEl = document.getElementById("nextNumber");
     const messageEl = document.getElementById("message");
+    const targetMainEl = document.getElementById("targetMain");
+    const targetSubEl = document.getElementById("targetSub");
 
-    let currentNumber = 1;
-    let maxNumber = 25;
     let startTime = null;
     let timerInterval = null;
     let isRunning = false;
 
-    // 各方格大小最佳紀錄（秒）
-    // Best time per grid size / 各方格大小最佳紀錄
-    const bestTimes = {};
+    let sequence = [];    // 要按的順序（id 陣列）
+    let currentIndex = 0; // 現在要找 sequence[currentIndex]
+    let gridItems = [];   // 目前這一局用到的 item 資料
 
+    const bestTimes = {}; // key: mode+size, value: 秒數
+
+    // ====== 資料定義：數字 / 英文 / 顏色 / 動物 ======
+
+    function getNumberItems() {
+      const arr = [];
+      for (let i = 1; i <= 25; i++) {
+        arr.push({
+          id: String(i),
+          main: String(i),
+          sub: "",
+          type: "number"
+        });
+      }
+      return arr;
+    }
+
+    function getEnglishItems() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      return letters.map(function (ch) {
+        return {
+          id: ch,
+          main: ch,
+          sub: "Letter / 英文字母",
+          type: "english"
+        };
+      });
+    }
+
+    function getColorItems() {
+      const defs = [
+        { id: "RED",   en: "Red",    zh: "紅色",    bg: "#fecaca", fg: "#7f1d1d" },
+        { id: "ORANGE",en: "Orange", zh: "橘色",    bg: "#fed7aa", fg: "#7c2d12" },
+        { id: "YELLOW",en: "Yellow", zh: "黃色",    bg: "#fef08a", fg: "#713f12" },
+        { id: "GREEN", en: "Green",  zh: "綠色",    bg: "#bbf7d0", fg: "#14532d" },
+        { id: "BLUE",  en: "Blue",   zh: "藍色",    bg: "#bfdbfe", fg: "#1d4ed8" },
+        { id: "PURPLE",en: "Purple", zh: "紫色",    bg: "#e9d5ff", fg: "#581c87" },
+        { id: "PINK",  en: "Pink",   zh: "粉紅",    bg: "#fed7e2", fg: "#9d174d" },
+        { id: "BROWN", en: "Brown",  zh: "咖啡色",  bg: "#fed7aa", fg: "#78350f" },
+        { id: "BLACK", en: "Black",  zh: "黑色",    bg: "#e5e7eb", fg: "#111827" }
+      ];
+      return defs.map(function (c) {
+        return {
+          id: c.id,
+          main: c.en,
+          sub: c.zh + " / " + c.en,
+          bg: c.bg,
+          fg: c.fg,
+          type: "color"
+        };
+      });
+    }
+
+    function getAnimalItems() {
+      const defs = [
+        { id: "DOG",  emoji: "🐶", en: "Dog",   zh: "狗狗" },
+        { id: "CAT",  emoji: "🐱", en: "Cat",   zh: "貓咪" },
+        { id: "RABBIT",emoji:"🐰", en: "Rabbit",zh: "兔兔" },
+        { id: "BEAR", emoji: "🐻", en: "Bear",  zh: "熊熊" },
+        { id: "MONKEY",emoji:"🐵", en: "Monkey",zh: "猴子" },
+        { id: "PANDA",emoji:"🐼", en: "Panda", zh: "熊貓" },
+        { id: "PIG",  emoji: "🐷", en: "Pig",   zh: "小豬" },
+        { id: "CHICK",emoji:"🐥", en: "Chick", zh: "小雞" },
+        { id: "FROG", emoji: "🐸", en: "Frog",  zh: "青蛙" }
+      ];
+      return defs.map(function (a) {
+        return {
+          id: a.id,
+          main: a.emoji,
+          sub: a.zh + " / " + a.en,
+          type: "animal"
+        };
+      });
+    }
+
+    function getAllItemsByMode(mode) {
+      if (mode === "number") return getNumberItems();
+      if (mode === "english") return getEnglishItems();
+      if (mode === "color") return getColorItems();
+      if (mode === "animal") return getAnimalItems();
+      return getNumberItems();
+    }
+
+    // ====== 工具：洗牌 ======
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
+        const tmp = array[i];
         array[i] = array[j];
-        array[j] = temp;
+        array[j] = tmp;
       }
       return array;
     }
 
-    function generateGrid(size) {
+    // ====== 生成方格 ======
+    function generateGrid(size, mode) {
       gridEl.innerHTML = "";
-      // 這裡是前一版的 bug：寫成 repeat(${size, 1fr})，這樣 JS 直接錯誤。
-      // This line was the bug before; now it's fixed:
       gridEl.style.gridTemplateColumns = "repeat(" + size + ", 1fr)";
 
       const total = size * size;
-      const numbers = shuffle(
-        Array.from({ length: total }, function (_, i) {
-          return i + 1;
-        })
-      );
+      const allItems = getAllItemsByMode(mode);
+      const usable = allItems.slice(0, total); // 只取前 N 個
+      gridItems = usable.slice();              // 複製一份給全域用
 
-      numbers.forEach(function (num) {
+      // 按「原始順序」作為正確順序
+      sequence = usable.map(function (item) {
+        return item.id;
+      });
+      currentIndex = 0;
+      updateTargetDisplay();
+
+      const shuffled = shuffle(usable.slice());
+
+      shuffled.forEach(function (item) {
         const btn = document.createElement("button");
         btn.className = "cell";
-        btn.textContent = num;
-        btn.setAttribute("data-number", String(num));
+        btn.setAttribute("data-id", item.id);
+
+        // 不同模式展示略有差異
+        const mainSpan = document.createElement("span");
+        mainSpan.className = "cell-label";
+        mainSpan.textContent = item.main;
+
+        const subSpan = document.createElement("span");
+        subSpan.className = "cell-sub";
+        subSpan.textContent = item.sub || "";
+
+        btn.appendChild(mainSpan);
+        if (item.sub) {
+          btn.appendChild(subSpan);
+        }
+
+        if (item.type === "color") {
+          btn.style.backgroundColor = item.bg;
+          btn.style.color = item.fg;
+        }
+
         btn.addEventListener("click", onCellClick);
         gridEl.appendChild(btn);
       });
     }
 
+    function updateTargetDisplay() {
+      if (!sequence.length || currentIndex >= sequence.length) {
+        targetMainEl.textContent = "—";
+        targetSubEl.textContent = "";
+        return;
+      }
+      const currentId = sequence[currentIndex];
+      const item = gridItems.find(function (it) {
+        return it.id === currentId;
+      });
+      if (!item) {
+        targetMainEl.textContent = "—";
+        targetSubEl.textContent = "";
+        return;
+      }
+      targetMainEl.textContent = item.main;
+      targetSubEl.textContent = item.sub || "";
+    }
+
+    // ====== 遊戲流程 ======
     function startGame() {
       const size = parseInt(gridSizeSelect.value, 10);
-      maxNumber = size * size;
-      currentNumber = 1;
+      const mode = modeSelect.value;
+
       isRunning = true;
       startBtn.disabled = true;
 
       messageEl.innerHTML =
-        "遊戲開始囉！從 <strong>1</strong> 開始依序點數字。<br/>Game start! Click numbers in order / 從 1 開始。";
-      nextNumberEl.textContent = String(currentNumber);
+        "遊戲開始囉！請依序按正確的格子。<br/>Game start! Tap items in order / 依照順序按。";
+
       timerEl.textContent = "0.00s";
 
-      generateGrid(size);
+      generateGrid(size, mode);
+      updateTargetDisplay();
 
       if (timerInterval) {
         clearInterval(timerInterval);
@@ -409,50 +576,61 @@
           "完成！👍 可以再玩一次，看看能不能更快～<br/>Completed! Try again / 再挑戰看看。";
       }
 
-      nextNumberEl.textContent = "—";
+      targetMainEl.textContent = "—";
+      targetSubEl.textContent = "";
     }
 
     function onCellClick(e) {
       if (!isRunning) return;
 
-      const target = e.currentTarget;
-      const num = Number(target.getAttribute("data-number"));
+      const btn = e.currentTarget;
+      const id = btn.getAttribute("data-id");
+      const expectedId = sequence[currentIndex];
 
-      if (num === currentNumber) {
-        target.classList.add("hit");
-        target.disabled = true;
-        currentNumber += 1;
-        nextNumberEl.textContent =
-          currentNumber <= maxNumber ? String(currentNumber) : "—";
-
-        if (currentNumber > maxNumber) {
+      if (id === expectedId) {
+        btn.classList.add("hit");
+        btn.disabled = true;
+        currentIndex += 1;
+        if (currentIndex >= sequence.length) {
+          updateTargetDisplay();
           finishGame();
+        } else {
+          updateTargetDisplay();
         }
       } else {
-        // 點錯數字
-        target.classList.add("wrong");
+        btn.classList.add("wrong");
+        const currentItem = gridItems.find(function (it) {
+          return it.id === expectedId;
+        });
+        let hint = "";
+        if (currentItem) {
+          hint =
+            currentItem.sub
+              ? currentItem.sub
+              : currentItem.main;
+        }
+
         messageEl.innerHTML =
-          "這個不是現在要找的數字喔～請找 <strong>" +
-          (currentNumber <= maxNumber ? currentNumber : "完成") +
-          "</strong>。<br/>Not this one. Find number " +
-          (currentNumber <= maxNumber ? currentNumber : "done") +
-          " / 請找正確數字。";
+          "這個不是現在要找的喔～請找 <strong>" +
+          hint +
+          "</strong>。<br/>Not this one. Find the highlighted target / 請找上面顯示的目標。";
+
         setTimeout(function () {
-          target.classList.remove("wrong");
+          btn.classList.remove("wrong");
         }, 180);
       }
     }
 
     function getBestKey() {
       const size = parseInt(gridSizeSelect.value, 10);
-      return size + "x" + size;
+      const mode = modeSelect.value;
+      return mode + "_" + size;
     }
 
-    // 初始化顯示 5×5
-    // Initial render / 初始顯示
-    generateGrid(5);
-    nextNumberEl.textContent = "—";
-
+    // 初始化顯示（先顯示空盤，數字模式 3x3）
+    generateGrid(3, "number");
+    isRunning = false;
+    startBtn.disabled = false;
     startBtn.addEventListener("click", startGame);
   </script>
 </body>
